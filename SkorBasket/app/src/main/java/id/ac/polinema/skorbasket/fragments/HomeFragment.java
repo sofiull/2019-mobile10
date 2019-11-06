@@ -6,6 +6,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +38,7 @@ public class HomeFragment extends Fragment {
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		sharedScore = ViewModelProviders.of(requireActivity()).get(SharedScore.class);
 	}
 
 	@Override
@@ -53,5 +57,36 @@ public class HomeFragment extends Fragment {
 		scoreSatuHome = view.findViewById(R.id.scoreSatuHome);
 
 		// Tambahkan logic tombol di bagian bawah ini
+		sharedScore.getScoreHome().observe(requireActivity(), new Observer<Integer>() {
+			@Override
+			public void onChanged(Integer score) {
+				scoreHome.setText(String.valueOf(score));
+				scoreDefault = score;
+			}
+		});
+
+		//tambah +1 score untuk Home
+		scoreSatuHome.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				sharedScore.setScoreHome(scoreDefault+1);
+			}
+		});
+
+		//tambah +2 score untuk Home
+		scoreDuaHome.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				sharedScore.setScoreHome(scoreDefault+2);
+			}
+		});
+
+		//tambah +3 score untuk Home
+		scoreTigaHome.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				sharedScore.setScoreHome(scoreDefault+3);
+			}
+		});
 	}
 }
